@@ -2,9 +2,28 @@
 class Manga1000 extends ComicSource {
     name = "Manga1000"
     key = "manga1000"
-    version = "1.0.1"
+    version = "1.0.2"
     minAppVersion = "1.0.0"
     url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/manga1000.js";
+
+    // 分类名中文翻译（官方 translation 字段）
+    translation = {
+        'zh_CN': {
+            "Action": "动作",
+            "Adult": "成人",
+            "Ecchi": "擦边",
+            "Fantasy": "奇幻",
+            "Harem": "后宫"
+        },
+        'zh_TW': {
+            "Action": "动作",
+            "Adult": "成人",
+            "Ecchi": "擦边",
+            "Fantasy": "奇幻",
+            "Harem": "后宫"
+        },
+    }
+
 
     static defaultBaseUrl = "hachiraw.win"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
