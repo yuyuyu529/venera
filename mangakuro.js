@@ -4,7 +4,7 @@
 class MangaKuro extends ComicSource {
     name = "MangaKuro"
     key = "mangakuro"
-    version = "1.0.2"
+    version = "1.0.3"
     minAppVersion = "1.0.0"
     url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/mangakuro.js";
 
@@ -571,8 +571,8 @@ class MangaKuro extends ComicSource {
             {
                 name: "题材",
                 type: "fixed",
-                categories: MangaKuro.genres.map((g) => g[1]),
-                categoryParams: MangaKuro.genres.map((g) => g[0]),
+                categories: MangaKuro.genres.map((g) => g[0]),
+                categoryParams: MangaKuro.genres.map((g) => g[1]),
                 itemType: "category",
             },
         ],
