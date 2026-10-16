@@ -19,7 +19,7 @@ class Lovehug extends ComicSource {
   key = "lovehug";
   version = "1.0.0";
   minAppVersion = "1.0.0";
-  url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/lovehug.js";
+  url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/lovehug.js";
   baseUrl = "https://lovehug.net";
 
   get headers() {
