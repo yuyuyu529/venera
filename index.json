@@ -75,8 +75,8 @@
     "name": "Rawdevart",
     "fileName": "rawdevart.js",
     "key": "rawdevart",
-    "version": "1.0.0",
-    "description": "rawdevart.art，日语生肉站。63 个题材，章节页有 Continue 门控（源已带 read=1 cookie）（有目标漫画 12 章）",
+    "version": "1.1.0",
+    "description": "rawdevart.art，日语生肉站。走官方 JSON API：/spa/latest-manga、/spa/search、/spa/genre/<id>、/spa/manga/<id>，63 个题材，章节全（104 章）",
     "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/rawdevart.js"
   }
 ]
