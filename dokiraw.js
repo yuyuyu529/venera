@@ -55,6 +55,18 @@ class Dokiraw extends ComicSource {
 
     errorMessage(e) { return String((e && (e.message || e)) || e) }
 
+    // Venera 的 HtmlDocument 不支持逗号组合选择器，这里拆开依次查询
+    qsa(root, selectors) {
+        const out = []
+        String(selectors).split("|").forEach((s) => {
+            const sel = s.trim()
+            if (!sel) return
+            try { root.querySelectorAll(sel).forEach((e) => { if (out.indexOf(e) < 0) out.push(e) }) } catch (_) {}
+        })
+        return out
+    }
+
+
     async getHtml(path, headers) {
         const res = await Network.get(this.absoluteUrl(path), headers || this.headers)
         if (res && res.error) throw `Dokiraw 网络错误：${this.errorMessage(res.error)}`
@@ -122,14 +134,15 @@ class Dokiraw extends ComicSource {
             const og = String(html).match(/property=["']?og:image["']?\s+content=["']([^"']+)/i) || String(html).match(/content=["']([^"']+)["']\s+property=["']?og:image/i)
             if (og) cover = this.absoluteUrl(og[1])
 
-            // 章节：div[class*=manga-detail_chapter] 的父级 <a>
+            // 章节：a[href*=chapter] 内含 div[class*=manga-detail_chapter]（不用 parentElement）
             const arr = []
-            doc.querySelectorAll("div[class*=manga-detail_chapter]").forEach((div) => {
-                const a = div.parentElement
-                if (!a) return
+            doc.querySelectorAll('a[href*="/chapter"]').forEach((a) => {
+                if (!a.querySelector("div[class*=manga-detail_chapter]")) return
                 const href = this.absoluteUrl(a.attributes["href"])
-                if (!href || !/\/chapter/.test(href) || arr.some((x) => x[0] === href)) return
-                arr.push([href, String(div.text || "").trim() || href])
+                if (!href || arr.some((x) => x[0] === href)) return
+                const sp = a.querySelector("span")
+                const name = String((sp && sp.text) || a.text || "").trim() || href
+                arr.push([href, name])
             })
             const chapters = new Map()
             for (let i = arr.length - 1; i >= 0; i--) chapters.set(arr[i][0], arr[i][1])
