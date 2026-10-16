@@ -2,9 +2,9 @@
 class Manga1000 extends ComicSource {
     name = "Manga1000"
     key = "manga1000"
-    version = "1.0.0"
+    version = "1.0.1"
     minAppVersion = "1.0.0"
-    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/manga1000.js"
+    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/manga1000.js";
 
     static defaultBaseUrl = "hachiraw.win"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -125,6 +125,16 @@ class Manga1000 extends ComicSource {
     }
 
     comic = {
+        // 支持粘贴漫画网址直接打开
+        idMatch: "https?://[^/]*hachiraw[^/]*/manga-[^/]+",
+        link: {
+            domains: ["hachiraw.win"],
+            linkToId: (url) => {
+                const m = String(url || "").match(/\/(manga-[^/?#]+)/)
+                return m ? `/${m[1]}/` : null
+            },
+        },
+
         loadInfo: async (id) => {
             const url = this.absoluteUrl(id)
             const doc = new HtmlDocument(await this.getHtml(url))
