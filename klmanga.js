@@ -70,14 +70,6 @@ class Klmanga extends ComicSource {
 
   explore = [
     {
-      title: "百合（生肉）",
-      type: "multiPageComicList",
-      load: async (page) => {
-        const p = page || 1;
-        return await this.fetchList(`${this.baseUrl}/manga-genre/%E7%99%BE%E5%90%88/` + (p > 1 ? `page/${p}/` : ""));
-      },
-    },
-    {
       title: "最新更新",
       type: "multiPageComicList",
       load: async (page) => {
