@@ -21,9 +21,25 @@
 class Jmanga extends ComicSource {
   name = "jmanga(生肉)";
   key = "jmanga";
-  version = "1.0.2";
+  version = "1.0.3";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/jmanga.js";
+
+    // 分类名中文翻译（官方 translation 字段）
+    translation = {
+        'zh_CN': {
+            "BLコミック": "BL漫画",
+            "TLコミック": "TL漫画",
+            "ラブコメ": "恋爱喜剧"
+        },
+        'zh_TW': {
+            "BLコミック": "BL漫画",
+            "TLコミック": "TL漫画",
+            "ラブコメ": "恋爱喜剧"
+        },
+    }
+
+
   baseUrl = "https://jmanga.nyc";
 
   get headers() {
