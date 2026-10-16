@@ -2,9 +2,86 @@
 class Klto9 extends ComicSource {
     name = "Klto9"
     key = "klto9"
-    version = "1.0.2"
+    version = "1.0.3"
     minAppVersion = "1.0.0"
     url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/klto9.js";
+
+    // 分类名中文翻译（官方 translation 字段）
+    translation = {
+        'zh_CN': {
+            "Action": "动作",
+            "Adult": "成人",
+            "Adventure": "冒险",
+            "Comedy": "喜剧",
+            "Demons": "恶魔",
+            "Drama": "剧情",
+            "Ecchi": "擦边",
+            "Fantasy": "奇幻",
+            "Gender Bender": "性转",
+            "Harem": "后宫",
+            "Historical": "历史",
+            "Horror": "恐怖",
+            "Isekai": "异世界",
+            "Josei": "女性",
+            "Magic": "魔法",
+            "Mature": "成熟",
+            "Mecha": "机甲",
+            "Mystery": "悬疑",
+            "Psychological": "心理",
+            "Romance": "恋爱",
+            "School Life": "校园",
+            "Sci-fi": "科幻",
+            "Seinen": "青年",
+            "Shoujo": "少女",
+            "Shounen": "少年",
+            "Shounen Ai": "少年爱",
+            "Slice of Life": "日常",
+            "Smut": "情色",
+            "Sports": "运动",
+            "Super Power": "超能力",
+            "Supernatural": "超自然",
+            "Tragedy": "悲剧",
+            "Yaoi": "YAOI",
+            "Yuri": "百合"
+        },
+        'zh_TW': {
+            "Action": "动作",
+            "Adult": "成人",
+            "Adventure": "冒险",
+            "Comedy": "喜剧",
+            "Demons": "恶魔",
+            "Drama": "剧情",
+            "Ecchi": "擦边",
+            "Fantasy": "奇幻",
+            "Gender Bender": "性转",
+            "Harem": "后宫",
+            "Historical": "历史",
+            "Horror": "恐怖",
+            "Isekai": "异世界",
+            "Josei": "女性",
+            "Magic": "魔法",
+            "Mature": "成熟",
+            "Mecha": "机甲",
+            "Mystery": "悬疑",
+            "Psychological": "心理",
+            "Romance": "恋爱",
+            "School Life": "校园",
+            "Sci-fi": "科幻",
+            "Seinen": "青年",
+            "Shoujo": "少女",
+            "Shounen": "少年",
+            "Shounen Ai": "少年爱",
+            "Slice of Life": "日常",
+            "Smut": "情色",
+            "Sports": "运动",
+            "Super Power": "超能力",
+            "Supernatural": "超自然",
+            "Tragedy": "悲剧",
+            "Yaoi": "YAOI",
+            "Yuri": "百合"
+        },
+    }
+
 
     static defaultBaseUrl = "klto9.com"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
