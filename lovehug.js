@@ -17,9 +17,42 @@
 class Lovehug extends ComicSource {
   name = "Nicomanga(生肉)";
   key = "lovehug";
-  version = "1.0.0";
+  version = "1.0.1";
   minAppVersion = "1.0.0";
   url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/lovehug.js";
+
+    // 分类名中文翻译（官方 translation 字段）
+    translation = {
+        'zh_CN': {
+            "GL Girls Love": "百合",
+            "Girls Love GL Yuri": "百合",
+            "Romance Yuri": "恋爱百合",
+            "Seinen Yuri": "青年百合",
+            "Shoujo Ai Yuri": "少女爱百合",
+            "Adult": "成人",
+            "Comedy": "喜剧",
+            "Drama": "剧情",
+            "Girls Love": "百合",
+            "Romance": "恋爱",
+            "School Life": "校园",
+            "Slice of Life": "日常"
+        },
+        'zh_TW': {
+            "GL Girls Love": "百合",
+            "Girls Love GL Yuri": "百合",
+            "Romance Yuri": "恋爱百合",
+            "Seinen Yuri": "青年百合",
+            "Shoujo Ai Yuri": "少女爱百合",
+            "Adult": "成人",
+            "Comedy": "喜剧",
+            "Drama": "剧情",
+            "Girls Love": "百合",
+            "Romance": "恋爱",
+            "School Life": "校园",
+            "Slice of Life": "日常"
+        },
+    }
+
   baseUrl = "https://lovehug.net";
 
   get headers() {
