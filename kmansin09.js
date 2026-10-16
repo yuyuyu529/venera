@@ -162,7 +162,7 @@ class Kmansin09 extends ComicSource {
                         arr.push([href, String(a.text || "").trim() || href])
                     })
                     // 站点顺序是最新→最老，反转后让最老章在前
-                    for (let i = arr.length - 1; i >= 0; i--) chapters.set(arr[i][0], arr[i][1])
+                    for (let i = 0; i < arr.length; i++) chapters.set(arr[i][0], arr[i][1])
                 }
             } catch (_) {}
 
