@@ -4,41 +4,47 @@
     "fileName": "kmansin09.js",
     "key": "kmansin09",
     "version": "1.0.0",
-    "description": "韩漫/日语生肉站（Madara）。主页=热门/最新，搜索，分类=排序，章节走 ajax/chapters（已实测）"
+    "description": "韩漫/日语生肉站（Madara）。主页=热门/最新，搜索，分类=排序，章节走 ajax/chapters（已实测）",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/kmansin09.js"
   },
   {
     "name": "MangaKuro",
     "fileName": "mangakuro.js",
     "key": "mangakuro",
     "version": "1.0.0",
-    "description": "生肉站。150 个题材分类 + 主页 + 搜索，图片走 /ajax/image/list/chap（已实测）"
+    "description": "生肉站。150 个题材分类 + 主页 + 搜索，图片走 /ajax/image/list/chap（已实测）",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/mangakuro.js"
   },
   {
     "name": "Nicomanga(生肉)",
     "fileName": "lovehug.js",
     "key": "lovehug",
     "version": "1.0.0",
-    "description": "lovehug.net / rawinu.com，日本生肉聚合站，8 个百合分类，免登录无 CF，图片 HTML 直出"
+    "description": "lovehug.net / rawinu.com，日本生肉聚合站，8 个百合分类，免登录无 CF，图片 HTML 直出",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/lovehug.js"
   },
   {
     "name": "jmanga(生肉)",
     "fileName": "jmanga.js",
     "key": "jmanga",
     "version": "1.0.2",
-    "description": "jmanga.nyc / jmanga.media，日语生肉站，百合・GL 分类有商业百合单行本扫图"
+    "description": "jmanga.nyc / jmanga.media，日语生肉站，百合・GL 分类有商业百合单行本扫图",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/jmanga.js"
   },
   {
     "name": "KLManga(生肉)",
     "fileName": "klmanga.js",
     "key": "klmanga",
     "version": "1.0.0",
-    "description": "klmanga.toys，日本生肉聚合站，百合分类约 11 页，图片走 admin-ajax 解密"
+    "description": "klmanga.toys，日本生肉聚合站，百合分类约 11 页，图片走 admin-ajax 解密",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/klmanga.js"
   },
   {
     "name": "Rawkuma 生肉",
     "fileName": "rawkuma.js",
     "key": "rawkuma",
     "version": "1.0.0",
-    "description": "rawkuma.net，百合 122 部（同类最多），htmx+REST 双路径，图片 HTML 直出"
+    "description": "rawkuma.net，百合 122 部（同类最多），htmx+REST 双路径，图片 HTML 直出",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/rawkuma.js"
   }
 ]
