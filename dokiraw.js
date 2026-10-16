@@ -2,9 +2,38 @@
 class Dokiraw extends ComicSource {
     name = "Dokiraw"
     key = "dokiraw"
-    version = "1.0.1"
+    version = "1.0.2"
     minAppVersion = "1.0.0"
     url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/dokiraw.js";
+
+    // 分类名中文翻译（官方 translation 字段）
+    translation = {
+        'zh_CN': {
+            "SF": "科幻",
+            "Ecchi": "擦边",
+            "アクション": "动作",
+            "エロい": "情色",
+            "コメディ": "喜剧",
+            "スポーツ": "运动",
+            "ファンタジー": "奇幻",
+            "フルカラー": "全彩",
+            "ロマンス": "恋爱",
+            "異世界": "异世界"
+        },
+        'zh_TW': {
+            "SF": "科幻",
+            "Ecchi": "擦边",
+            "アクション": "动作",
+            "エロい": "情色",
+            "コメディ": "喜剧",
+            "スポーツ": "运动",
+            "ファンタジー": "奇幻",
+            "フルカラー": "全彩",
+            "ロマンス": "恋爱",
+            "異世界": "异世界"
+        },
+    }
+
 
     static defaultBaseUrl = "dokiraw.guru"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -74,6 +103,17 @@ class Dokiraw extends ComicSource {
         return String(res.body || "")
     }
 
+    // 从分页链接里取总页数
+    maxPageOf(html) {
+        const doc = new HtmlDocument(String(html || ""))
+        let max = 1
+        doc.querySelectorAll('a[href*="page="]').forEach((a) => {
+            const m = String(a.attributes["href"] || "").match(/[?&]page=(\d+)/)
+            if (m) { const n = Number(m[1]); if (n > max) max = n }
+        })
+        return max
+    }
+
     parseList(html) {
         const out = []
         const doc = new HtmlDocument(String(html || ""))
@@ -82,7 +122,14 @@ class Dokiraw extends ComicSource {
             if (!img) return
             const href = this.absoluteUrl(a.attributes["href"])
             if (!/\/manga\//.test(href)) return
-            const title = String(img.attributes["alt"] || a.attributes["title"] || "").trim()
+
+            // 注意：站点所有卡片的 img[alt] 都是同一个值（站点 bug），
+            // 真标题在卡片的父级容器里的 h3
+            let title = ""
+            const wrap = a.parent
+            const h3 = wrap ? wrap.querySelector("h3") : null
+            if (h3) title = String(h3.text || "").trim()
+            if (!title) title = String(a.attributes["title"] || img.attributes["alt"] || "").trim()
             const cover = this.absoluteUrl(img.attributes["data-original"] || img.attributes["data-src"] || img.attributes["src"])
             if (title && href && !out.some((c) => c.id === href)) {
                 out.push(new Comic({ id: href, title: title, cover: cover, subTitle: "" }))
@@ -109,18 +156,19 @@ class Dokiraw extends ComicSource {
 
     categoryComics = {
         optionList: [],
-        load: async (category, param, options, page) => ({
-            comics: this.parseList(await this.getHtml(`/search/manga?genre=${encodeURIComponent(String(param || ""))}`)),
-            maxPage: null,
-        }),
+        load: async (category, param, options, page) => {
+            const p = Math.max(1, page)
+            const html = await this.getHtml(`/search/manga?genre=${encodeURIComponent(String(param || ""))}&page=${p}`)
+            return { comics: this.parseList(html), maxPage: this.maxPageOf(html) }
+        },
     }
 
     search = {
         optionList: [],
-        load: async (keyword, options, page) => ({
-            comics: this.parseList(await this.getHtml(`/search/manga?q=${encodeURIComponent(String(keyword || "").trim())}`)),
-            maxPage: null,
-        }),
+        load: async (keyword, options, page) => {
+            const html = await this.getHtml(`/search/manga?keyword=${encodeURIComponent(String(keyword || "").trim())}&page=${Math.max(1, page)}`)
+            return { comics: this.parseList(html), maxPage: this.maxPageOf(html) }
+        },
     }
 
     comic = {
