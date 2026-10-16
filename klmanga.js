@@ -145,7 +145,7 @@ class Klmanga extends ComicSource {
         title: titleEl ? (titleEl.text || "").trim() : "",
         cover: imgEl ? this.abs(imgEl.attributes["src"]) : "",
         description: descEl ? (descEl.text || "").trim() : "",
-        tags, chapters, url,
+        tags, chapters: Object.fromEntries(Object.entries(chapters).reverse()), url,
       });
     },
 
