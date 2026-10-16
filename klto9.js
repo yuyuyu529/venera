@@ -2,7 +2,7 @@
 class Klto9 extends ComicSource {
     name = "Klto9"
     key = "klto9"
-    version = "1.0.1"
+    version = "1.0.2"
     minAppVersion = "1.0.0"
     url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/klto9.js";
 
@@ -118,8 +118,23 @@ class Klto9 extends ComicSource {
             if (!a) return
             const href = this.absoluteUrl(a.attributes["href"])
             const title = String(a.attributes["title"] || a.text || "").trim()
-            const img = el.querySelector("img")
-            const cover = img ? this.absoluteUrl(img.attributes["data-src"] || img.attributes["src"]) : ""
+
+            // 站点封面不是 <img>，而是 div.content.img-in-ratio 的 data-bg 背景图
+            let cover = ""
+            const bgEl = el.querySelector("[data-bg]") || el.querySelector(".img-in-ratio") || el.querySelector(".content")
+            if (bgEl) {
+                cover = String(bgEl.attributes["data-bg"] || "").trim()
+                if (!cover) {
+                    const st = String(bgEl.attributes["style"] || "")
+                    const m = st.match(/url\((['"]?)([^'")]+)\1\)/)
+                    if (m) cover = m[2]
+                }
+            }
+            if (!cover) {
+                const img = el.querySelector("img")
+                if (img) cover = String(img.attributes["data-src"] || img.attributes["src"] || "")
+            }
+            cover = this.absoluteUrl(cover)
             if (title && href && !out.some((c) => c.id === href)) out.push(new Comic({ id: href, title: title, cover: cover, subTitle: "" }))
         })
         return out
@@ -176,6 +191,11 @@ class Klto9 extends ComicSource {
             const tEl = doc.querySelector(".manga-info h3") || doc.querySelector(".manga-info h1") || doc.querySelector("h1")
             const title = tEl ? String(tEl.text || "").trim() : ""
 
+            // 详情页封面：img[itemprop=image]（带 hide 类，但仍可取到 src）
+            let cover = ""
+            const cEl = doc.querySelector("img[itemprop=image]") || doc.querySelector(".thumb-detail img") || doc.querySelector(".manga-info img")
+            if (cEl) cover = this.absoluteUrl(cEl.attributes["src"] || cEl.attributes["data-src"] || "")
+
             // 站点用 dataL 变量存 slug（章节接口需要它）
             const m = String(html).match(/dataL\s*=\s*"([^"]+)"/)
             const slug = m ? m[1] : ""
@@ -193,12 +213,13 @@ class Klto9 extends ComicSource {
                             if (!href || arr.some((x) => x[0] === href)) return
                             arr.push([href, String(a.attributes["title"] || a.text || "").trim() || href])
                         })
-                        for (let i = 0; i < arr.length; i++) chapters.set(arr[i][0], arr[i][1])
+                        // 站点顺序是最新→最老，倒过来让第 1 话在最前
+            for (let i = arr.length - 1; i >= 0; i--) chapters.set(arr[i][0], arr[i][1])
                     }
                 } catch (_) {}
             }
 
-            return new ComicDetails({ title: title, cover: "", description: "", tags: {}, chapters: chapters, url: url })
+            return new ComicDetails({ title: title, cover: cover, description: "", tags: {}, chapters: chapters, url: url })
         },
 
         loadEp: async (comicId, epId) => {
