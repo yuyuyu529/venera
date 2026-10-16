@@ -50,6 +50,18 @@ class Manga1000 extends ComicSource {
 
     errorMessage(e) { return String((e && (e.message || e)) || e) }
 
+    // Venera 的 HtmlDocument 不支持逗号组合选择器，这里拆开依次查询
+    qsa(root, selectors) {
+        const out = []
+        String(selectors).split("|").forEach((s) => {
+            const sel = s.trim()
+            if (!sel) return
+            try { root.querySelectorAll(sel).forEach((e) => { if (out.indexOf(e) < 0) out.push(e) }) } catch (_) {}
+        })
+        return out
+    }
+
+
     async getHtml(path, headers) {
         const res = await Network.get(this.absoluteUrl(path), headers || this.headers)
         if (res && res.error) throw `Manga1000 网络错误：${this.errorMessage(res.error)}`
@@ -60,7 +72,7 @@ class Manga1000 extends ComicSource {
     parseList(html) {
         const out = []
         const doc = new HtmlDocument(String(html || ""))
-        doc.querySelectorAll(".article-wrap-inner, article").forEach((el) => {
+        this.qsa(doc, ".article-wrap-inner| article").forEach((el) => {
             const a = el.querySelector('a[href*="/manga-"]')
             if (!a) return
             const href = this.absoluteUrl(a.attributes["href"])
@@ -132,7 +144,7 @@ class Manga1000 extends ComicSource {
         loadEp: async (comicId, epId) => {
             const doc = new HtmlDocument(await this.getHtml(epId))
             const images = []
-            doc.querySelectorAll("img[data-src], .entry-content img").forEach((img) => {
+            this.qsa(doc, "img[data-src]| .entry-content img").forEach((img) => {
                 const src = this.absoluteUrl(img.attributes["data-src"] || img.attributes["src"])
                 if (src && !/lazy\.png/.test(src) && images.indexOf(src) < 0) images.push(src)
             })
