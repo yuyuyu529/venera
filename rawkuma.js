@@ -630,7 +630,7 @@ class Rawkuma extends ComicSource {
                 cover: cover,
                 description: description,
                 tags: tags,
-                chapters: chapters,
+                chapters: Object.fromEntries(Object.entries(chapters).reverse()),
                 url: url,
             });
         },
