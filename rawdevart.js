@@ -114,6 +114,18 @@ class Rawdevart extends ComicSource {
 
     errorMessage(e) { return String((e && (e.message || e)) || e) }
 
+    // Venera 的 HtmlDocument 不支持逗号组合选择器，这里拆开依次查询
+    qsa(root, selectors) {
+        const out = []
+        String(selectors).split("|").forEach((s) => {
+            const sel = s.trim()
+            if (!sel) return
+            try { root.querySelectorAll(sel).forEach((e) => { if (out.indexOf(e) < 0) out.push(e) }) } catch (_) {}
+        })
+        return out
+    }
+
+
     async getHtml(path, headers) {
         const res = await Network.get(this.absoluteUrl(path), headers || this.headers)
         if (res && res.error) throw `Rawdevart 网络错误：${this.errorMessage(res.error)}`
@@ -198,7 +210,7 @@ class Rawdevart extends ComicSource {
             if (!server) server = "https://s3.rawuwu.net/"
 
             const images = []
-            doc.querySelectorAll(".chapter-img img[data-src], .chapter-imgs img[data-src]").forEach((img) => {
+            this.qsa(doc, ".chapter-img img[data-src]| .chapter-imgs img[data-src]").forEach((img) => {
                 const rel = String(img.attributes["data-src"] || "")
                 if (!rel) return
                 const abs = /^https?:\/\//i.test(rel) ? rel : server.replace(/\/+$/, "") + "/" + rel.replace(/^\/+/, "")
