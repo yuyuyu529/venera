@@ -46,5 +46,37 @@
     "version": "1.0.0",
     "description": "rawkuma.net，百合 122 部（同类最多），htmx+REST 双路径，图片 HTML 直出",
     "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/rawkuma.js"
+  },
+  {
+    "name": "Dokiraw",
+    "fileName": "dokiraw.js",
+    "key": "dokiraw",
+    "version": "1.0.0",
+    "description": "dokiraw.guru，日语生肉站。主页=热门，搜索，10 个题材分类，图片 HTML 直出（有目标漫画 104 章）",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/dokiraw.js"
+  },
+  {
+    "name": "Klto9",
+    "fileName": "klto9.js",
+    "key": "klto9",
+    "version": "1.0.0",
+    "description": "klto9.com，生肉站。34 个题材分类，章节走 .lstc 接口、图片走 .iog 接口（需 Referer）（有目标漫画 104 章）",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/klto9.js"
+  },
+  {
+    "name": "Manga1000",
+    "fileName": "manga1000.js",
+    "key": "manga1000",
+    "version": "1.0.0",
+    "description": "hachiraw.win，生肉站。5 个分类，搜索，图片 HTML 直出（有目标漫画 104 章）",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/manga1000.js"
+  },
+  {
+    "name": "Rawdevart",
+    "fileName": "rawdevart.js",
+    "key": "rawdevart",
+    "version": "1.0.0",
+    "description": "rawdevart.art，日语生肉站。63 个题材，章节页有 Continue 门控（源已带 read=1 cookie）（有目标漫画 12 章）",
+    "url": "https://raw.githubusercontent.com/yuyuyu529/venera/main/rawdevart.js"
   }
 ]
