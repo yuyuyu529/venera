@@ -183,7 +183,7 @@ class Klto9 extends ComicSource {
                             if (!href || arr.some((x) => x[0] === href)) return
                             arr.push([href, String(a.attributes["title"] || a.text || "").trim() || href])
                         })
-                        for (let i = arr.length - 1; i >= 0; i--) chapters.set(arr[i][0], arr[i][1])
+                        for (let i = 0; i < arr.length; i++) chapters.set(arr[i][0], arr[i][1])
                     }
                 } catch (_) {}
             }
