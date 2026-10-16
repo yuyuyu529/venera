@@ -11,7 +11,7 @@ class Klmanga extends ComicSource {
   key = "klmanga";
   version = "1.0.0";
   minAppVersion = "1.0.0";
-  url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/klmanga.js";
+  url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/klmanga.js";
   baseUrl = "https://klmanga.toys";
 
   get headers() {
