@@ -190,7 +190,7 @@ class Lovehug extends ComicSource {
         cover: coverEl ? this.abs(coverEl.attributes["src"]) : "",
         description: descEl ? (descEl.text || "").trim() : "",
         tags,
-        chapters,
+        chapters: Object.fromEntries(Object.entries(chapters).reverse()),
         url,
       });
     },
