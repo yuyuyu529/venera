@@ -86,35 +86,11 @@ class Jmanga extends ComicSource {
 
   explore = [
     {
-      title: "百合・GL（生肉）",
-      type: "multiPageComicList",
-      load: async (page) => {
-        const p = page || 1;
-        return await this.fetchList(`${this.baseUrl}/genres/${encodeURIComponent("百合・GL")}/` + (p > 1 ? `?p=${p}` : ""));
-      },
-    },
-    {
       title: "最新更新",
       type: "multiPageComicList",
       load: async (page) => {
         const p = page || 1;
         return await this.fetchList(`${this.baseUrl}/latest-updated/` + (p > 1 ? `?p=${p}` : ""));
-      },
-    },
-    {
-      title: "新作",
-      type: "multiPageComicList",
-      load: async (page) => {
-        const p = page || 1;
-        return await this.fetchList(`${this.baseUrl}/new-release/` + (p > 1 ? `?p=${p}` : ""));
-      },
-    },
-    {
-      title: "最多浏览",
-      type: "multiPageComicList",
-      load: async (page) => {
-        const p = page || 1;
-        return await this.fetchList(`${this.baseUrl}/most-viewed/` + (p > 1 ? `?p=${p}` : ""));
       },
     },
   ];
