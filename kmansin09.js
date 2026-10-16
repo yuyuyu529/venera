@@ -4,9 +4,9 @@
 class Kmansin09 extends ComicSource {
     name = "K-Mansin (韩漫)"
     key = "kmansin09"
-    version = "1.0.0"
+    version = "1.0.1"
     minAppVersion = "1.0.0"
-    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/kmansin09.js"
+    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/kmansin09.js";
 
     static defaultBaseUrl = "kmansin09.top"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -132,6 +132,19 @@ class Kmansin09 extends ComicSource {
     }
 
     comic = {
+        // 点题材直接搜索
+        onClickTag: (namespace, tag) => ({ action: "search", keyword: String(tag || "") }),
+
+        // 支持粘贴漫画网址直接打开
+        idMatch: "https?://[^/]*kmansin09[^/]*/manga/[^/]+",
+        link: {
+            domains: ["kmansin09.top"],
+            linkToId: (url) => {
+                const m = String(url || "").match(/\/manga\/([^/?#]+)/)
+                return m ? `/manga/${m[1]}/` : null
+            },
+        },
+
         loadInfo: async (id) => {
             const url = this.absoluteUrl(id)
             const doc = new HtmlDocument(await this.getHtml(url))
