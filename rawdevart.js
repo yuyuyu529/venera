@@ -3,9 +3,9 @@
 class Rawdevart extends ComicSource {
     name = "Rawdevart"
     key = "rawdevart"
-    version = "1.1.0"
+    version = "1.1.1"
     minAppVersion = "1.0.0"
-    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/rawdevart.js"
+    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/rawdevart.js";
 
     static defaultBaseUrl = "rawdevart.art"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -166,6 +166,19 @@ class Rawdevart extends ComicSource {
     }
 
     comic = {
+        // 点题材直接搜索
+        onClickTag: (namespace, tag) => ({ action: "search", keyword: String(tag || "") }),
+
+        // 支持粘贴漫画网址直接打开（/g/ne<id>）
+        idMatch: "https?://[^/]*rawdevart[^/]*/g/ne(\\d+)",
+        link: {
+            domains: ["rawdevart.art"],
+            linkToId: (url) => {
+                const m = String(url || "").match(/\/g\/ne(\d+)/)
+                return m ? m[1] : null
+            },
+        },
+
         loadInfo: async (id) => {
             const j = await this.getJson(`/spa/manga/${encodeURIComponent(String(id))}`)
             const d = j.detail || {}
