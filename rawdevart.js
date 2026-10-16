@@ -186,7 +186,8 @@ class Rawdevart extends ComicSource {
 
             // 章节：站点 JSON 就是「最新 → 最老」，与其它源保持一致，不再反转
             const chapters = new Map()
-            ;(j.chapters || []).forEach((c) => {
+            // JSON 里是最新→最老，倒过来让第 1 话在最前
+            ;(j.chapters || []).slice().reverse().forEach((c) => {
                 const num = String(c.chapter_number === undefined ? "" : c.chapter_number).replace(/\.0$/, "")
                 if (!num) return
                 const title = String(c.chapter_title || "").trim()
