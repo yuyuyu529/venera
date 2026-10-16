@@ -91,6 +91,18 @@ class Klto9 extends ComicSource {
 
     errorMessage(e) { return String((e && (e.message || e)) || e) }
 
+    // Venera 的 HtmlDocument 不支持逗号组合选择器，这里拆开依次查询
+    qsa(root, selectors) {
+        const out = []
+        String(selectors).split("|").forEach((s) => {
+            const sel = s.trim()
+            if (!sel) return
+            try { root.querySelectorAll(sel).forEach((e) => { if (out.indexOf(e) < 0) out.push(e) }) } catch (_) {}
+        })
+        return out
+    }
+
+
     async getHtml(path, headers) {
         const res = await Network.get(this.absoluteUrl(path), headers || this.headers)
         if (res && res.error) throw `Klto9 网络错误：${this.errorMessage(res.error)}`
@@ -192,7 +204,7 @@ class Klto9 extends ComicSource {
 
             const images = []
             const doc = new HtmlDocument(String(res.body || ""))
-            doc.querySelectorAll("img.chapter-img, img").forEach((img) => {
+            this.qsa(doc, "img.chapter-img| img").forEach((img) => {
                 const src = this.absoluteUrl(img.attributes["src"] || img.attributes["data-src"] || img.attributes["data-aload"])
                 if (src && !/lzloader|pagespeed/.test(src) && images.indexOf(src) < 0) images.push(src)
             })
