@@ -4,9 +4,9 @@
 class MangaKuro extends ComicSource {
     name = "MangaKuro"
     key = "mangakuro"
-    version = "1.0.0"
+    version = "1.0.1"
     minAppVersion = "1.0.0"
-    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/mangakuro.js"
+    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/mangakuro.js";
 
     // 题材表：[slug, 显示名]，取自站点 /genres 页（150 个，实测）
     static genres = [
@@ -298,6 +298,16 @@ class MangaKuro extends ComicSource {
     }
 
     comic = {
+        // 支持粘贴漫画网址直接打开
+        idMatch: "https?://[^/]*mangakuro[^/]*/manga/[^/]+",
+        link: {
+            domains: ["mangakuro.net"],
+            linkToId: (url) => {
+                const m = String(url || "").match(/\/manga\/([^/?#]+)/)
+                return m ? `/manga/${m[1]}` : null
+            },
+        },
+
         loadInfo: async (id) => {
             const url = this.absoluteUrl(id)
             const doc = new HtmlDocument(await this.getHtml(url))
