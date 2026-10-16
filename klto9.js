@@ -2,9 +2,9 @@
 class Klto9 extends ComicSource {
     name = "Klto9"
     key = "klto9"
-    version = "1.0.0"
+    version = "1.0.1"
     minAppVersion = "1.0.0"
-    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/klto9.js"
+    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/klto9.js";
 
     static defaultBaseUrl = "klto9.com"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -159,6 +159,16 @@ class Klto9 extends ComicSource {
     }
 
     comic = {
+        // 支持粘贴漫画网址直接打开
+        idMatch: "https?://[^/]*klto9[^/]*/[^/]+\\.html",
+        link: {
+            domains: ["klto9.com"],
+            linkToId: (url) => {
+                const m = String(url || "").match(/\/([^/?#]+\.html)/)
+                return m ? `/${m[1]}` : null
+            },
+        },
+
         loadInfo: async (id) => {
             const url = this.absoluteUrl(id)
             const html = await this.getHtml(url)
