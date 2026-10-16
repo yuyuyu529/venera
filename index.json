@@ -10,21 +10,21 @@
     "name": "MangaKuro",
     "fileName": "mangakuro.js",
     "key": "mangakuro",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "生肉站。150 个题材分类 + 主页 + 搜索，图片走 /ajax/image/list/chap（已实测）"
   },
   {
     "name": "Nicomanga(生肉)",
     "fileName": "lovehug.js",
     "key": "lovehug",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "lovehug.net / rawinu.com，日本生肉聚合站，8 个百合分类，免登录无 CF，图片 HTML 直出"
   },
   {
     "name": "jmanga(生肉)",
     "fileName": "jmanga.js",
     "key": "jmanga",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "jmanga.nyc / jmanga.media，日语生肉站，百合・GL 分类有商业百合单行本扫图"
   },
   {
@@ -45,28 +45,28 @@
     "name": "Dokiraw",
     "fileName": "dokiraw.js",
     "key": "dokiraw",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "dokiraw.guru，日语生肉站。主页=热门，搜索，10 个题材分类，图片 HTML 直出（有目标漫画 104 章）"
   },
   {
     "name": "Klto9",
     "fileName": "klto9.js",
     "key": "klto9",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "klto9.com，生肉站。34 个题材分类，章节走 .lstc 接口、图片走 .iog 接口（需 Referer）（有目标漫画 104 章）"
   },
   {
     "name": "Manga1000",
     "fileName": "manga1000.js",
     "key": "manga1000",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "hachiraw.win，生肉站。5 个分类，搜索，图片 HTML 直出（有目标漫画 104 章）"
   },
   {
     "name": "Rawdevart",
     "fileName": "rawdevart.js",
     "key": "rawdevart",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "rawdevart.art，日语生肉站。走官方 JSON API：/spa/latest-manga、/spa/search、/spa/genre/<id>、/spa/manga/<id>，63 个题材，章节全（104 章）"
   }
 ]
