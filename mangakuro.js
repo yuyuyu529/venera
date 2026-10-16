@@ -326,7 +326,7 @@ class MangaKuro extends ComicSource {
                 arr.push([href, name])
             })
             const chapters = new Map()
-            for (let i = arr.length - 1; i >= 0; i--) chapters.set(arr[i][0], arr[i][1])
+            for (let i = 0; i < arr.length; i++) chapters.set(arr[i][0], arr[i][1])
 
             return new ComicDetails({
                 title: title,
