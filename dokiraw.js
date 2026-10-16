@@ -2,9 +2,9 @@
 class Dokiraw extends ComicSource {
     name = "Dokiraw"
     key = "dokiraw"
-    version = "1.0.0"
+    version = "1.0.1"
     minAppVersion = "1.0.0"
-    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/dokiraw.js"
+    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/dokiraw.js";
 
     static defaultBaseUrl = "dokiraw.guru"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -124,6 +124,16 @@ class Dokiraw extends ComicSource {
     }
 
     comic = {
+        // 支持粘贴漫画网址直接打开
+        idMatch: "https?://[^/]*dokiraw[^/]*/manga/[^/]+",
+        link: {
+            domains: ["dokiraw.guru"],
+            linkToId: (url) => {
+                const m = String(url || "").match(/\/manga\/([^/?#]+)/)
+                return m ? `/manga/${m[1]}` : null
+            },
+        },
+
         loadInfo: async (id) => {
             const url = this.absoluteUrl(id)
             const html = await this.getHtml(url)
