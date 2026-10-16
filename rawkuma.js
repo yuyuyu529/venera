@@ -67,7 +67,9 @@ class Rawkuma extends ComicSource {
     key = "rawkuma"
     version = "1.0.0"
     minAppVersion = "1.0.0"
-    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/rawkuma.js";/* ───────────────────────── 常量 ───────────────────────── */
+    url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/rawkuma.js"
+
+    /* ───────────────────────── 常量 ───────────────────────── */
 
     static UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
     static DEFAULT_HOST = "rawkuma.net"
@@ -479,29 +481,9 @@ class Rawkuma extends ComicSource {
 
     explore = [
         {
-            title: "百合 · 最新更新",
-            type: "multiPageComicList",
-            load: async (page) => await this.loadAjaxList({ page: page, genre: ["yuri"], orderby: "updated" }),
-        },
-        {
-            title: "百合 · 人气",
-            type: "multiPageComicList",
-            load: async (page) => await this.loadAjaxList({ page: page, genre: ["yuri"], orderby: "popular" }),
-        },
-        {
-            title: "百合 · 评分",
-            type: "multiPageComicList",
-            load: async (page) => await this.loadAjaxList({ page: page, genre: ["yuri"], orderby: "rating" }),
-        },
-        {
             title: "全站 · 最新更新",
             type: "multiPageComicList",
             load: async (page) => await this.loadAjaxList({ page: page, orderby: "updated" }),
-        },
-        {
-            title: "全站 · 人气",
-            type: "multiPageComicList",
-            load: async (page) => await this.loadAjaxList({ page: page, orderby: "popular" }),
         },
     ]
 
