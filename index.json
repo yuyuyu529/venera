@@ -10,7 +10,7 @@
     "name": "MangaKuro",
     "fileName": "mangakuro.js",
     "key": "mangakuro",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "生肉站。150 个题材分类 + 主页 + 搜索，图片走 /ajax/image/list/chap（已实测）"
   },
   {
