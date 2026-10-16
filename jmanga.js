@@ -206,7 +206,7 @@ class Jmanga extends ComicSource {
         cover: poster ? this.abs(poster.attributes["data-src"] || poster.attributes["src"]) : "",
         description,
         tags,
-        chapters,
+        chapters: Object.fromEntries(Object.entries(chapters).reverse()),
         url,
       });
     },
