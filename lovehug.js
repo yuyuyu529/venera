@@ -92,21 +92,6 @@ class Lovehug extends ComicSource {
 
   explore = [
     {
-      title: "百合 yuri（最新）",
-      type: "multiPageComicList",
-      load: async (page) => await this.fetchList(this.listUrl(page, { genre: "yuri" })),
-    },
-    {
-      title: "少女爱 shoujo-ai",
-      type: "multiPageComicList",
-      load: async (page) => await this.fetchList(this.listUrl(page, { genre: "shoujo-ai" })),
-    },
-    {
-      title: "GL／百合综合",
-      type: "multiPageComicList",
-      load: async (page) => await this.fetchList(this.listUrl(page, { genre: "girls-love-gl-yuri" })),
-    },
-    {
       title: "全站最新更新",
       type: "multiPageComicList",
       load: async (page) => await this.fetchList(this.listUrl(page, {})),
