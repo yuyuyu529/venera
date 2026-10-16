@@ -23,7 +23,7 @@ class Jmanga extends ComicSource {
   key = "jmanga";
   version = "1.0.2";
   minAppVersion = "1.0.0";
-  url = "https://raw.githubusercontent.com/yuyuyu529/venera/main/jmanga.js";
+  url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/jmanga.js";
   baseUrl = "https://jmanga.nyc";
 
   get headers() {
