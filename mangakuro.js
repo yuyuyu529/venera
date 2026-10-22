@@ -6,7 +6,7 @@ class MangaKuro extends ComicSource {
     key = "mangakuro"
     version = "1.0.3"
     minAppVersion = "1.0.0"
-    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/mangakuro.js";
+    url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/mangakuro.js";
 
     // 分类名中文翻译（官方 translation 字段）
     translation = {
