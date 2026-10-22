@@ -68,5 +68,12 @@
     "key": "rawdevart",
     "version": "1.1.2",
     "description": "rawdevart.art，日语生肉站。走官方 JSON API：/spa/latest-manga、/spa/search、/spa/genre/<id>、/spa/manga/<id>，63 个题材，章节全（104 章）"
+  },
+  {
+    "name": "툰코 Toonkor",
+    "fileName": "toonkor.js",
+    "key": "toonkor",
+    "version": "1.0.0",
+    "description": "toonkor6.org，韩国网漫站。16 个题材分类 + 人气/连载/完结，正文图 base64 内嵌(已实测解码)。域名会换，设置里可改"
   }
 ]
