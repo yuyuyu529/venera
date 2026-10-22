@@ -5,7 +5,7 @@ class Rawdevart extends ComicSource {
     key = "rawdevart"
     version = "1.1.2"
     minAppVersion = "1.0.0"
-    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/rawdevart.js";
+    url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/rawdevart.js";
 
     // 分类名中文翻译（官方 translation 字段）
     translation = {
