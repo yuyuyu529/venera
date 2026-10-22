@@ -75,5 +75,12 @@
     "key": "toonkor",
     "version": "1.0.0",
     "description": "toonkor6.org，韩国网漫站。16 个题材分类 + 人气/连载/完结，正文图 base64 内嵌(已实测解码)。域名会换，设置里可改"
+  },
+  {
+    "name": "マガポケ Magazine Pocket",
+    "fileName": "magazinepocket.js",
+    "key": "magazinepocket",
+    "version": "1.0.0",
+    "description": "pocket.shonenmagazine.com（讲谈社官方）。需签名 API，图片 4x4 瓦片打乱已用 modifyImage 还原。免费话可读，付费话标 🔒"
   }
 ]
