@@ -6,7 +6,7 @@ class Kmansin09 extends ComicSource {
     key = "kmansin09"
     version = "1.0.1"
     minAppVersion = "1.0.0"
-    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/kmansin09.js";
+    url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/kmansin09.js";
 
     static defaultBaseUrl = "kmansin09.top"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
