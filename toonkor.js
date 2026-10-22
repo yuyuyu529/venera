@@ -5,7 +5,7 @@ class Toonkor extends ComicSource {
     key = "toonkor"
     version = "1.0.0"
     minAppVersion = "1.0.0"
-    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/toonkor.js"
+    url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/toonkor.js"
 
     static defaultBaseUrl = "toonkor6.org"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
