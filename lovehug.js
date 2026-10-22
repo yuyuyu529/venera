@@ -19,7 +19,7 @@ class Lovehug extends ComicSource {
   key = "lovehug";
   version = "1.0.1";
   minAppVersion = "1.0.0";
-  url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/lovehug.js";
+  url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/lovehug.js";
 
     // 分类名中文翻译（官方 translation 字段）
     translation = {
