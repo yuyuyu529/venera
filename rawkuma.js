@@ -67,7 +67,7 @@ class Rawkuma extends ComicSource {
     key = "rawkuma"
     version = "1.0.0"
     minAppVersion = "1.0.0"
-    url = "https://cdn.jsdelivr.net/gh/yuyuyu529/venera@main/rawkuma.js";
+    url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/rawkuma.js";
 
     /* ───────────────────────── 常量 ───────────────────────── */
 
