@@ -4,8 +4,8 @@
     "fileName": "kalamanhua.js",
     "filename": "kalamanhua.js",
     "key": "kalamanhua",
-    "version": "1.0.1",
-    "description": "kalamanhua.com，中文漫画站（韩漫/日漫/中漫/欧美漫/其他）。自动过 omo_token 访问验证；章节图需 Referer + cf_verify（列表/搜索/详情/章节/图片均已实测 200）"
+    "version": "1.1.0",
+    "description": "kalamanhua.com，中文漫画站。大分类（全部/韩漫/日漫/中漫/欧美漫/其他）× 48 个题材小分类；自动过 omo_token 验证；章节图需 Referer + cf_verify（均已实测）"
   },{
     "name": "K-Mansin (韩漫)",
     "fileName": "kmansin09.js",
@@ -24,7 +24,7 @@
     "name": "Nicomanga(生肉)",
     "fileName": "lovehug.js",
     "key": "lovehug",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "lovehug.net / rawinu.com，日本生肉聚合站，8 个百合分类，免登录无 CF，图片 HTML 直出"
   },
   {
@@ -87,7 +87,7 @@
     "name": "マガポケ Magazine Pocket",
     "fileName": "magazinepocket.js",
     "key": "magazinepocket",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "pocket.shonenmagazine.com（讲谈社官方）。需签名 API，图片 4x4 瓦片打乱已用 modifyImage 还原。免费话可读，付费话标 🔒"
   }
 ]
