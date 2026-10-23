@@ -3,7 +3,7 @@
     "name": "K-Mansin (韩漫)",
     "fileName": "kmansin09.js",
     "key": "kmansin09",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "韩漫/日语生肉站（Madara）。主页=热门/最新，搜索，分类=排序，章节走 ajax/chapters（已实测）"
   },
   {
@@ -80,7 +80,7 @@
     "name": "マガポケ Magazine Pocket",
     "fileName": "magazinepocket.js",
     "key": "magazinepocket",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "pocket.shonenmagazine.com（讲谈社官方）。需签名 API，图片 4x4 瓦片打乱已用 modifyImage 还原。免费话可读，付费话标 🔒"
   }
 ]
