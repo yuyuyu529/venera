@@ -18,13 +18,17 @@ const KALA_BASE = "https://www.kalamanhua.com";
 const KALA_IMG = "https://image.kalaimg.top";
 const KALA_UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+// 站点 WAF 会对「浏览器 UA + 非浏览器 TLS 指纹」的组合反复弹验证页，
+// 这种组合下换成 curl 的 UA 反而直接放行，作为兜底 UA。
+const KALA_ALT_UA = "curl/8.6.0";
 const KALA_REFERER = KALA_BASE + "/";
 
 let kalaToken = "a7d838e940d1a0ea";
+let kalaUA = KALA_UA;
 
 function kalaHeaders(extra) {
   const h = {
-    "User-Agent": KALA_UA,
+    "User-Agent": kalaUA,
     Accept:
       "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
@@ -39,26 +43,35 @@ function kalaHeaders(extra) {
 
 /** GET on kalamanhua.com, transparently solving the omo_token challenge */
 async function kalaGet(url, referer) {
-  const headers = kalaHeaders(referer ? { Referer: referer } : null);
-  let res = await Network.get(url, headers);
-  if (res.status !== 200 || res.body.indexOf("stui-") === -1) {
-    const m = /k="([0-9a-zA-Z]+)"/.exec(res.body || "");
-    if (m) {
-      kalaToken = m[1];
-      headers.Cookie = "omo_token=" + kalaToken;
-      res = await Network.get(url, headers);
+  let lastStatus = 0;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const headers = kalaHeaders(referer ? { Referer: referer } : null);
+    const res = await Network.get(url, headers);
+    lastStatus = res.status;
+    const body = res.body || "";
+    if (res.status === 200 && body.indexOf("stui-") !== -1) {
+      return body;
     }
+    const m = /k="([0-9a-zA-Z]+)"/.exec(body);
+    if (m && m[1] !== kalaToken) {
+      // 站点下发了新的 omo_token，换 token 重试
+      kalaToken = m[1];
+      continue;
+    }
+    if (kalaUA !== KALA_ALT_UA) {
+      // 验证页在正确 token 下仍然反复出现 -> 改用兜底 UA
+      kalaUA = KALA_ALT_UA;
+      continue;
+    }
+    break;
   }
-  if (res.status !== 200) {
-    throw "kalamanhua: HTTP " + res.status + " for " + url;
-  }
-  return res.body;
+  throw "kalamanhua: HTTP " + lastStatus + " for " + url;
 }
 
 /** GET on image host (no main-site cookie, never follow its omo token) */
 async function kalaImgGet(url, referer) {
   const headers = {
-    "User-Agent": KALA_UA,
+    "User-Agent": kalaUA,
     Accept: "text/html,application/xhtml+xml,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9",
     Referer: referer || KALA_IMG + "/",
@@ -173,7 +186,7 @@ class Kalamanhua extends ComicSource {
 
   key = "kalamanhua";
 
-  version = "1.0.0";
+  version = "1.0.1";
 
   minAppVersion = "1.0.0";
 
@@ -414,8 +427,16 @@ class Kalamanhua extends ComicSource {
         url: url,
         headers: {
           referer: KALA_REFERER,
-          "user-agent": KALA_UA,
+          "user-agent": kalaUA,
         },
+        // 图片域同样按 UA 拦截，失败时换 UA 再试一次
+        onLoadFailed: () => ({
+          url: url,
+          headers: {
+            referer: KALA_REFERER,
+            "user-agent": kalaUA === KALA_UA ? KALA_ALT_UA : KALA_UA,
+          },
+        }),
       };
     },
 
@@ -424,7 +445,7 @@ class Kalamanhua extends ComicSource {
       if (url && url.indexOf("kalaimg.top") !== -1) {
         cfg.headers = {
           referer: KALA_REFERER,
-          "user-agent": KALA_UA,
+          "user-agent": kalaUA,
         };
       }
       return cfg;
