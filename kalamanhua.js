@@ -26,6 +26,26 @@ const KALA_REFERER = KALA_BASE + "/";
 let kalaToken = "a7d838e940d1a0ea";
 let kalaUA = KALA_UA;
 
+// 大分类（站点地区/频道）与小分类（题材标签，站点全站共用一套）
+const KALA_CATS = [
+  ["全部", "All"],
+  ["韩漫", "Kc"],
+  ["日漫", "Jc"],
+  ["中漫", "Cc"],
+  ["欧美漫", "Ec"],
+  ["其他", "Oc"],
+];
+const KALA_TAGS = [
+  "恋爱", "冒险", "生活", "校园", "热血", "魔法", "悬疑", "科幻",
+  "运动", "都市", "耽美", "搞笑", "单女主", "纯爱", "总裁", "奇幻",
+  "恐怖", "灵异", "异能", "穿越", "剧情", "古风", "言情", "玄幻",
+  "复仇", "多女主", "霸总", "虐恋", "青春", "真人", "重生", "甜宠",
+  "游戏竞技", "家庭", "BL", "民国", "同人", "系统", "爱情", "美人",
+  "喜剧", "纯真", "腹黑", "财阀", "后宫", "战争", "修真", "其他",
+];
+// 题材筛选页从第 2 页起不再输出分页条，这里缓存第 1 页算出的总页数
+const kalaMaxPageCache = {};
+
 function kalaHeaders(extra) {
   const h = {
     "User-Agent": kalaUA,
@@ -186,7 +206,7 @@ class Kalamanhua extends ComicSource {
 
   key = "kalamanhua";
 
-  version = "1.0.1";
+  version = "1.1.0";
 
   minAppVersion = "1.0.0";
 
@@ -221,29 +241,69 @@ class Kalamanhua extends ComicSource {
     },
   ];
 
+  // 大分类 + 小分类（题材）：每个大分类一行，行内是该站点自己的题材标签，
+  // 选大分类 → 该行里选题材，param 形如 "Kc|恋爱"。
   category = {
     title: "卡拉漫画",
-    parts: [
-      {
-        name: "分类",
+    parts: KALA_CATS.map((c) => {
+      const labels = ["全部"].concat(KALA_TAGS);
+      const params = [c[1] + "|"].concat(KALA_TAGS.map((t) => c[1] + "|" + t));
+      return {
+        name: c[0],
         type: "fixed",
-        categories: ["全部", "韩漫", "日漫", "中漫", "欧美漫", "其他"],
-        categoryParams: ["All", "Kc", "Jc", "Cc", "Ec", "Oc"],
+        categories: labels,
+        categoryParams: params,
         itemType: "category",
-      },
-    ],
+      };
+    }),
     enableRankingPage: false,
   };
 
   categoryComics = {
     load: async (category, param, options, page) => {
-      const cid = param || "All";
-      const html = await kalaGet(
-        KALA_BASE + "/list/" + cid + "/page/" + page + ".html"
-      );
+      let cid = "All";
+      let tag = "";
+      const raw = String(param == null ? "" : param);
+      const bar = raw.indexOf("|");
+      if (bar >= 0) {
+        cid = raw.substring(0, bar) || "All";
+        tag = raw.substring(bar + 1);
+      } else if (raw) {
+        cid = raw;
+      }
+      page = page > 0 ? page : 1;
+
+      let html;
+      let maxPage;
+      if (tag) {
+        const key = cid + "|" + tag;
+        const suffix = page > 1 ? String(page) : "";
+        html = await kalaGet(
+          KALA_BASE +
+            "/type/" +
+            cid +
+            "--" +
+            encodeURIComponent(tag) +
+            "---" +
+            suffix +
+            ".html"
+        );
+        if (page === 1) {
+          maxPage = kalaParseMaxPage(html);
+          kalaMaxPageCache[key] = maxPage;
+        } else {
+          // 该模板在题材页第 2 页起不再输出分页条，沿用第 1 页算出的总页数
+          maxPage = kalaMaxPageCache[key] || 1;
+        }
+      } else {
+        html = await kalaGet(
+          KALA_BASE + "/list/" + cid + "/page/" + page + ".html"
+        );
+        maxPage = kalaParseMaxPage(html);
+      }
       return {
         comics: kalaParseList(html),
-        maxPage: kalaParseMaxPage(html),
+        maxPage: maxPage,
       };
     },
   };
