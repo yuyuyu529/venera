@@ -4,7 +4,7 @@
 class Kmansin09 extends ComicSource {
     name = "K-Mansin (韩漫)"
     key = "kmansin09"
-    version = "1.0.1"
+    version = "1.0.2"
     minAppVersion = "1.0.0"
     url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/kmansin09.js";
 
@@ -34,6 +34,7 @@ class Kmansin09 extends ComicSource {
             "Accept-Language": "ja,en;q=0.9",
             "Referer": `${this.baseUrl}/`,
             "X-Requested-With": "XMLHttpRequest",
+            "Content-Type": "application/x-www-form-urlencoded",
         }
     }
 
