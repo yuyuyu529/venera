@@ -1,5 +1,12 @@
 [
   {
+    "name": "卡拉漫画",
+    "fileName": "kalamanhua.js",
+    "filename": "kalamanhua.js",
+    "key": "kalamanhua",
+    "version": "1.0.0",
+    "description": "kalamanhua.com，中文漫画站（韩漫/日漫/中漫/欧美漫/其他）。自动过 omo_token 访问验证；章节图需 Referer + cf_verify（列表/搜索/详情/章节/图片均已实测 200）"
+  },{
     "name": "K-Mansin (韩漫)",
     "fileName": "kmansin09.js",
     "key": "kmansin09",
