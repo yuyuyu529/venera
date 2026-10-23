@@ -6,7 +6,7 @@
 class MagazinePocket extends ComicSource {
     name = "マガポケ Magazine Pocket"
     key = "magazinepocket"
-    version = "1.0.0"
+    version = "1.0.1"
     minAppVersion = "1.0.5"
     url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/magazinepocket.js"
 
@@ -83,6 +83,9 @@ class MagazinePocket extends ComicSource {
         if (!res || Number(res.status) !== 200) {
             let msg = ""
             try { msg = String(JSON.parse(String(res.body || "{}")).error_message || "") } catch (e) {}
+            if (/unpurchased|not purchased|purchase/i.test(msg)) {
+                throw "本话是付费章节，需要在官方 App 里购买/租借后才能阅读"
+            }
             throw "マガポケ 请求失败（HTTP " + (res && res.status) + "）" + (msg ? "：" + msg : "")
         }
         return JSON.parse(String(res.body || "{}"))
@@ -91,7 +94,11 @@ class MagazinePocket extends ComicSource {
     async apiPost(path, params, body) {
         params = params || {}
         const url = "https://" + MagazinePocket.apiHost + path
-        const res = await Network.post(url, this.apiHeaders(params), body)
+        // 必须显式声明表单类型：不带时 Dio 用 text/plain，服务端解析不出参数 → 400
+        const headers = Object.assign({}, this.apiHeaders(params), {
+            "Content-Type": "application/x-www-form-urlencoded",
+        })
+        const res = await Network.post(url, headers, body)
         if (res && res.error) throw "マガポケ 网络错误：" + this.errorMessage(res.error)
         if (!res || Number(res.status) !== 200) throw "マガポケ 请求失败（HTTP " + (res && res.status) + "）"
         return JSON.parse(String(res.body || "{}"))
