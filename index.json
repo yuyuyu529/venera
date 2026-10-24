@@ -1,5 +1,12 @@
 [
   {
+    "name": "X漫画",
+    "fileName": "xmanhua.js",
+    "filename": "xmanhua.js",
+    "key": "xmanhua",
+    "version": "1.0.0",
+    "description": "xmanhua.net（mangabz 同系模板）。题材×状态×排序分类、搜索、首页多板块；章节图走 chapterimage.ashx + packer 解包，图片域需 Referer（结构按线上真实 HTML 校准）"
+  },{
     "name": "卡拉漫画",
     "fileName": "kalamanhua.js",
     "filename": "kalamanhua.js",
