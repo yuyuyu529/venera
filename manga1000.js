@@ -2,7 +2,7 @@
 class Manga1000 extends ComicSource {
     name = "Manga1000"
     key = "manga1000"
-    version = "1.0.2"
+    version = "1.1.0"
     minAppVersion = "1.0.0"
     url = "https://gcore.jsdelivr.net/gh/yuyuyu529/venera@main/manga1000.js";
 
@@ -27,6 +27,9 @@ class Manga1000 extends ComicSource {
 
     static defaultBaseUrl = "hachiraw.win"
     static ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+
+    // 站点自己的一张图，仅在完全取不到封面时兜底，避免下载任务卡在「下载封面」这一步
+    static fallbackCover = "/themes/hachiraw/img/lazy.png"
 
     settings = {
         base_url: {
@@ -80,6 +83,18 @@ class Manga1000 extends ComicSource {
         return out
     }
 
+    isLazy(u) { return !u || /lazy\.png|placeholder|loading\.gif|blank\.(gif|png)$/i.test(String(u)) }
+
+    // <img data-src="真图" src="lazy.png"> 是本站的懒加载写法
+    imgSrc(img) {
+        if (!img) return ""
+        const ds = img.attributes["data-src"] || img.attributes["data-original"] || img.attributes["data-lazy-src"]
+        if (ds && !this.isLazy(ds)) return this.absoluteUrl(ds)
+        const src = img.attributes["src"]
+        if (src && !this.isLazy(src)) return this.absoluteUrl(src)
+        return ""
+    }
+
 
     async getHtml(path, headers) {
         const res = await Network.get(this.absoluteUrl(path), headers || this.headers)
@@ -97,7 +112,7 @@ class Manga1000 extends ComicSource {
             const href = this.absoluteUrl(a.attributes["href"])
             const img = el.querySelector("img")
             const title = String((img && img.attributes["alt"]) || a.text || "").trim()
-            const cover = img ? this.absoluteUrl(img.attributes["data-src"] || img.attributes["src"]) : ""
+            const cover = this.imgSrc(img)
             if (title && href && !out.some((c) => c.id === href)) out.push(new Comic({ id: href, title: title, cover: cover, subTitle: "" }))
         })
         if (out.length === 0) {
@@ -105,10 +120,31 @@ class Manga1000 extends ComicSource {
                 const img = a.querySelector("img")
                 const href = this.absoluteUrl(a.attributes["href"])
                 const title = String((img && img.attributes["alt"]) || a.text || "").trim()
-                if (title && href && !out.some((c) => c.id === href)) out.push(new Comic({ id: href, title: title, cover: img ? this.absoluteUrl(img.attributes["data-src"] || img.attributes["src"]) : "", subTitle: "" }))
+                if (title && href && !out.some((c) => c.id === href)) out.push(new Comic({ id: href, title: title, cover: this.imgSrc(img), subTitle: "" }))
             })
         }
         return out
+    }
+
+    // 详情页封面：漫画页第一张图就是系列封面（.wp-block-image 里的懒加载图）
+    parseCover(doc) {
+        const selectors = [
+            ".wp-block-image img",
+            ".entry-content img",
+            "article img",
+            "img",
+        ]
+        for (const sel of selectors) {
+            let imgs = []
+            try { imgs = doc.querySelectorAll(sel) } catch (_) { imgs = [] }
+            for (const img of imgs) {
+                const src = this.imgSrc(img)
+                if (src) return src
+            }
+        }
+        const meta = doc.querySelector('meta[property="og:image"]') || doc.querySelector('meta[name="og:image"]')
+        if (meta && meta.attributes["content"]) return this.absoluteUrl(meta.attributes["content"])
+        return ""
     }
 
     explore = [
@@ -156,7 +192,8 @@ class Manga1000 extends ComicSource {
 
         loadInfo: async (id) => {
             const url = this.absoluteUrl(id)
-            const doc = new HtmlDocument(await this.getHtml(url))
+            const html = await this.getHtml(url)
+            const doc = new HtmlDocument(html)
             const tEl = doc.querySelector(".entry-title") || doc.querySelector("article h1") || doc.querySelector("h1")
             const title = tEl ? String(tEl.text || "").trim() : ""
             const arr = []
@@ -168,22 +205,88 @@ class Manga1000 extends ComicSource {
             const chapters = new Map()
             // 站点顺序是最新→最老，倒过来让第 1 话在最前
             for (let i = arr.length - 1; i >= 0; i--) chapters.set(arr[i][0], arr[i][1])
-            return new ComicDetails({ title: title, cover: "", description: "", tags: {}, chapters: chapters, url: url })
+
+            const cover = this.parseCover(doc) || this.absoluteUrl(Manga1000.fallbackCover)
+
+            // 简介 / 作者 / 状态 / 题材（页面只有这些结构化信息，没有长简介）
+            const paras = []
+            try { doc.querySelectorAll(".entry-content p").forEach((p) => paras.push(String(p.text || "").trim())) } catch (_) {}
+            const authorM = paras.find((x) => /^Author\s*[:：]/i.test(x))
+            const author = authorM ? authorM.replace(/^Author\s*[:：]\s*/i, "").trim() : ""
+            const statusM = paras.find((x) => /^(Updating|Completed|Ongoing|Finished|Publishing)$/i.test(x))
+            const status = statusM ? statusM.trim() : ""
+
+            const tags = {}
+            const tagLinks = []
+            try {
+                doc.querySelectorAll('.entry-content a[href*="/category/"]').forEach((a) => {
+                    const t = String(a.text || "").trim()
+                    if (t && tagLinks.indexOf(t) < 0) tagLinks.push(t)
+                })
+            } catch (_) {}
+            if (tagLinks.length) tags["题材"] = tagLinks
+
+            const descParts = []
+            if (author) descParts.push(`作者：${author}`)
+            if (tagLinks.length) descParts.push(`题材：${tagLinks.join(" / ")}`)
+            if (status) descParts.push(`状态：${status}`)
+            const description = descParts.join("\n")
+
+            return new ComicDetails({
+                title: title,
+                cover: cover,
+                description: description,
+                tags: tags,
+                chapters: chapters,
+                uploader: author || undefined,
+                subtitle: status || undefined,
+                subTitle: status || undefined,
+                url: url,
+            })
         },
 
         loadEp: async (comicId, epId) => {
             const doc = new HtmlDocument(await this.getHtml(epId))
             const images = []
-            this.qsa(doc, "img[data-src]| .entry-content img").forEach((img) => {
-                const src = this.absoluteUrl(img.attributes["data-src"] || img.attributes["src"])
-                if (src && !/lazy\.png/.test(src) && images.indexOf(src) < 0) images.push(src)
-            })
-            if (images.length === 0) throw "Manga1000 章节没有返回图片"
-            return { images: images }
+            const push = (u) => {
+                const s = this.imgSrc(u)
+                if (s && images.indexOf(s) < 0) images.push(s)
+            }
+            // 优先 .entry-content 里的懒加载图，兜底扫全页图
+            const main = this.qsa(doc, ".entry-content img| #TopPage img")
+            main.forEach(push)
+            if (images.length === 0) {
+                doc.querySelectorAll("img").forEach(push)
+            }
+            // 去掉站点 logo / 统计像素之类
+            const cleaned = images.filter((u) => !/\/img\/(logo|lazy|loading)|mc\.yandex|cloudflareinsights/i.test(u))
+            if (cleaned.length === 0) throw "Manga1000 章节没有返回图片"
+            return { images: cleaned }
         },
 
-        onImageLoad: (url, comicId, epId) => ({
-            headers: { "User-Agent": Manga1000.ua, "Referer": this.absoluteUrl(epId || comicId) },
-        }),
+        onImageLoad: (url, comicId, epId) => {
+            const chapterUrl = this.absoluteUrl(epId || comicId)
+            const base = { "User-Agent": Manga1000.ua, "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8" }
+            // 章节图在 tiktokcdn 上：第三方 Referer 反而可能被拒；站点自己的图带上正常 Referer
+            const isCdn = /tiktokcdn\.com|ibytedtos\.com/i.test(url)
+            const cfg = {
+                url: url,
+                headers: Object.assign({}, base, isCdn ? {} : { "Referer": chapterUrl }),
+            }
+            // 失败时换一套头再试（有无 Referer 互换），修「下载报错」
+            cfg.onLoadFailed = () => ({
+                url: url,
+                headers: Object.assign({}, base, isCdn ? { "Referer": chapterUrl } : {}),
+            })
+            return cfg
+        },
+
+        onThumbnailLoad: (url) => {
+            const u = url || this.absoluteUrl(Manga1000.fallbackCover)
+            return {
+                url: u,
+                headers: { "User-Agent": Manga1000.ua, "Referer": this.baseUrl + "/" },
+            }
+        },
     }
 }
